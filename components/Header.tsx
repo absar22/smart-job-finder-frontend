@@ -3,15 +3,10 @@ import Link from "next/link";
 export default function Header() {
   return (
     <header className="bg-gray-800 text-white p-4 flex items-center justify-between">
-      <h1 className="text-2xl font-bold">Job Finder</h1>
+      <h1 className="text-2xl font-bold"> <Link href="/">Job Finder</Link></h1>
 
       <nav>
         <ul className="flex space-x-6">
-          <li>
-            <Link className="hover:text-gray-300 transition-colors" href="/">
-              Home
-            </Link>
-          </li>
           <li>
             <Link className="hover:text-gray-300 transition-colors" href="/about">
               About
