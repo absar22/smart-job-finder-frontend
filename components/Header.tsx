@@ -7,7 +7,7 @@ export default function Header() {
         
         <div className="flex items-center gap-2">
         
-            <Image src="/image/appLogo.png" alt="Logo" width={50} height={40} className="rotate-[-3deg]" />
+            <Image src="/image/appLogo.png" alt="Logo" width={50} height={40} className="rotate-3" />
           
           <span className="text-2xl font-black tracking-tighter text-gray-900">
             <Link href="/">JOB<span className="text-main-orange uppercase">Finder</span></Link>
