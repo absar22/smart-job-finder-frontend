@@ -1,38 +1,35 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inconsolata } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { Metadata } from "next";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inconsolata = Inconsolata({
   subsets: ["latin"],
+  variable: "--font-inconsolata", // This matches your theme variable
 });
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
 export const metadata: Metadata = {
   title: "Job Finder",
-  description: "Find your dream job",
+  description: "Find your dream job in tech.",
+  keywords: ["jobs", "tech jobs", "job search", "career"],
+  icons: {
+    icon: "/image/appLogo.png"
+  },
+ 
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">
-          <Header />
-        {children}
-      
+    <html lang="en" className={`${inconsolata.variable}`}>
+      <body className="min-h-screen flex flex-col font-inconsolata">
+        <Header />
+        <main className="flex-1">
+          {children}
+        </main>
         <Footer />
       </body>
     </html>

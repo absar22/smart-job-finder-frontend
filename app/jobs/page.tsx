@@ -1,7 +1,9 @@
 
-
+import JobCard from "@/components/JobCard";
 async function getJobs(){
-    const res = await fetch('http://localhost:8000/api/jobs')
+    const res = await fetch('http://localhost:8000/api/jobs',{
+        cache: 'no-store'  // store new jobs
+    })
     const data = await res.json()
     if(!res.ok){
         throw new Error(data.message || 'Failed to fetch jobs')
@@ -24,13 +26,14 @@ export default async function Jobs(){
     const jobs: Job[] = data.jobs
     console.log(jobs)
     return (
-        <div>
-            <h1>Job Listings</h1>
-            <ul>
-                {jobs.map((job: Job) => (
-                    <li key={job._id}>{job.title}</li>
-                ))}
-            </ul>
-        </div>
+    <main className="p-6 max-w-4xl mx-auto">
+      <h1 className="text-3xl font-bold mb-6">Job Listings</h1>
+
+      <div className="space-y-4">
+        {jobs.map((job) => (
+          <JobCard key={job._id} job={job} />
+        ))}
+      </div>
+    </main>
     )
 }

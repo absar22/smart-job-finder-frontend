@@ -1,34 +1,31 @@
 import Link from "next/link";
-
+import Image from "next/image";
 export default function Header() {
   return (
-    <header className="bg-gray-800 text-white p-4 flex items-center justify-between">
-      <h1 className="text-2xl font-bold"> <Link href="/">Job Finder</Link></h1>
+    <header className="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b-2 border-main-orange/10">
+      <div className="max-w-6xl mx-auto px-6 h-18 flex items-center justify-between">
+        
+        <div className="flex items-center gap-2">
+        
+            <Image src="/image/appLogo.png" alt="Logo" width={50} height={40} className="rotate-[-3deg]" />
+          
+          <span className="text-2xl font-black tracking-tighter text-gray-900">
+            <Link href="/">JOB<span className="text-main-orange uppercase">Finder</span></Link>
+          </span>
+        </div>
+        
+        <nav className="hidden md:flex gap-8 font-bold text-sm uppercase tracking-widest text-gray-500">
+          <Link href="/jobs" className="hover:text-main-orange transition-colors">Browse</Link>
+          <Link href="/post" className="hover:text-main-orange transition-colors">Post Job</Link>
+        </nav>
 
-      <nav>
-        <ul className="flex space-x-6">
-          <li>
-            <Link className="hover:text-gray-300 transition-colors" href="/about">
-              About
-            </Link>
-          </li>
-          <li>
-            <Link className="hover:text-gray-300 transition-colors" href="/contact">
-              Contact
-            </Link>
-          </li>
-        </ul>
-      </nav>
+        <div className="flex gap-4">
+          <button className="px-6 py-2.5 bg-main-orange text-white rounded-full font-black text-sm uppercase tracking-wider shadow-xl shadow-main-orange/30 hover:scale-105 active:scale-95 transition-all">
+            Join Now
+          </button>
+        </div>
 
-      {/* auth buttons */}
-      <div className="flex space-x-4">
-        <button className="bg-blue-600 hover:bg-blue-700 rounded px-4 py-2 transition-colors">
-          Login
-        </button>
-        <button className="bg-red-600 hover:bg-red-700 rounded px-4 py-2 transition-colors">
-          Sign Up
-        </button>
       </div>
     </header>
-  )
+  );
 }
