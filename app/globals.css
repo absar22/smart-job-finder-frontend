@@ -2,15 +2,14 @@
 
 @theme {
   --font-inconsolata: "Inconsolata", monospace;
+  --font-syne: "Syne", sans-serif;
 
-  /* Using your specific OKLCH values */
   --color-primary: oklch(96% 0.003 17.2);
   --color-secondary: oklch(92.9% 0.01 228.9);
   --color-main-orange: oklch(70.2% 0.126 42.6 / 0.85);
   --color-main-green: oklch(73.3% 0.091 199 / 0.85);
   --color-main-blue: oklch(68.6% 0.118 232.8 / 0.85);
   --color-nav-btn: oklch(62.6% 0.106 198.8);
-
   --color-teal: oklch(62.6% 0.106 198.8);
   --color-teal-light: oklch(84.7% 0.022 227.6);
   --color-teal-lightest: oklch(92.6% 0.01 228.9);
@@ -18,9 +17,8 @@
 
 @layer base {
   body {
-    /* A warmer, softer background to compliment the orange */
-    background-color: oklch(98% 0.01 42.6); 
-    color: oklch(25% 0.02 42.6);
+    background-color: oklch(98% 0.008 42.6);
+    color: oklch(22% 0.02 42.6);
     font-family: var(--font-inconsolata);
   }
 }
