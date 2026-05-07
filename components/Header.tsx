@@ -4,7 +4,7 @@ import Link from "next/link";
 export default function Header() {
   return (
     <header className="sticky top-0 z-50 bg-[oklch(98%_0.008_42.6/0.88)] backdrop-blur-md border-b border-[oklch(80%_0.02_42.6)]">
-      <div className="max-w-6xl mx-auto px-6 h-[68px] flex items-center justify-between">
+      <div className="max-w-6xl mx-auto px-6 h-17 flex items-center justify-between">
 
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2.5 no-underline">
@@ -39,7 +39,7 @@ export default function Header() {
           ))}
         </nav>
 
-        {/* CTA */}
+         <div className="flex gap-2">
         <button
           className="px-5 py-2.5 text-white rounded-full font-black text-[13px] uppercase tracking-wider cursor-pointer border-none transition-all hover:scale-105 active:scale-95"
           style={{
@@ -48,8 +48,19 @@ export default function Header() {
             boxShadow: "0 4px 16px oklch(70.2% 0.126 42.6 / 0.4)",
           }}
         >
-          Join Now
+          Login
         </button>
+        <button
+          className="px-5 py-2.5 text-white rounded-full font-black text-[13px] uppercase tracking-wider cursor-pointer border-none transition-all hover:scale-105 active:scale-95"
+          style={{
+            background: "oklch(70.2% 0.126 42.6)",
+            fontFamily: "var(--font-inconsolata)",
+            boxShadow: "0 4px 16px oklch(70.2% 0.126 42.6 / 0.4)",
+          }}
+        >
+          Register
+        </button>
+        </div>
       </div>
     </header>
   );

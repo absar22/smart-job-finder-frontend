@@ -97,7 +97,7 @@ export default function HomePage() {
   return (
     <div className="relative overflow-hidden">
       {/* Decorative blob */}
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full -z-10 blur-3xl pointer-events-none"
+      <div className="absolute top-0 right-0 w-150 h-150 rounded-full -z-10 blur-3xl pointer-events-none"
         style={{ background: "oklch(70.2% 0.126 42.6 / 0.05)" }} />
 
       {/* ── HERO ── */}
@@ -118,12 +118,12 @@ export default function HomePage() {
           </div>
 
           {/* Headline */}
-          <h1 className="text-6xl md:text-7xl font-extrabold tracking-tight leading-[1.0] mb-6"
+          <h1 className="text-6xl md:text-7xl font-extrabold tracking-tight leading-none mb-6"
             style={{ fontFamily: "var(--font-syne)" }}>
             Land your{" "}
             <span className="relative inline-block" style={{ color: "oklch(70.2% 0.126 42.6)" }}>
               Dream Gig.
-              <span className="absolute bottom-0 left-0 right-0 h-[3px] rounded-sm"
+              <span className="absolute bottom-0 left-0 right-0 h-0.75 rounded-sm"
                 style={{ background: "oklch(70.2% 0.126 42.6 / 0.25)" }} />
             </span>
           </h1>
@@ -140,7 +140,7 @@ export default function HomePage() {
                 fontFamily: "var(--font-inconsolata)",
                 boxShadow: "0 8px 24px oklch(70.2% 0.126 42.6 / 0.4)",
               }}>
-              Start Searching 🚀
+              Start browsing jobs 🚀
             </button>
             <button className="px-8 py-4 bg-white text-gray-900 border-2 border-gray-200 rounded-2xl font-black text-base uppercase tracking-tight cursor-pointer transition-all hover:border-[oklch(70.2%_0.126_42.6)] hover:text-[oklch(70.2%_0.126_42.6)]"
               style={{ fontFamily: "var(--font-inconsolata)" }}>
@@ -179,7 +179,7 @@ export default function HomePage() {
           </div>
           {TICKER.map((j) => (
             <div key={j.role} className="flex items-center gap-3 py-3 border-b border-[oklch(80%_0.02_42.6)] last:border-none">
-              <div className="w-9 h-9 rounded-[10px] flex items-center justify-center font-black text-[12px] flex-shrink-0"
+              <div className="w-9 h-9 rounded-[10px] flex items-center justify-center font-black text-[12px] shrink-0"
                 style={{ background: `${j.color}22`, color: j.color, fontFamily: "var(--font-syne)" }}>
                 {j.initials}
               </div>
@@ -187,7 +187,7 @@ export default function HomePage() {
                 <div className="text-[13px] font-bold">{j.role}</div>
                 <div className="text-[12px] text-gray-400">{j.company} · {j.loc}</div>
               </div>
-              <span className="text-[11px] font-bold px-2.5 py-1 rounded-full flex-shrink-0"
+              <span className="text-[11px] font-bold px-2.5 py-1 rounded-full shrink-0"
                 style={{
                   background: "oklch(70.2% 0.126 42.6 / 0.08)",
                   color: "oklch(70.2% 0.126 42.6)",
@@ -204,7 +204,7 @@ export default function HomePage() {
       <div className="max-w-6xl mx-auto px-6 py-6 border-t border-[oklch(80%_0.02_42.6)] flex gap-12 justify-center flex-wrap group">
         {["TECHCORP", "DEVSTREAM", "STACKED", "CODEBASE", "BUILDIT"].map((b) => (
           <span key={b}
-            className="font-black text-base tracking-tighter text-gray-200 transition-colors duration-300 group-hover:text-gray-400 hover:!text-gray-900 cursor-default"
+            className="font-black text-base tracking-tighter text-gray-200 transition-colors duration-300 group-hover:text-gray-400 hover:text-gray-900 cursor-default"
             style={{ fontFamily: "var(--font-syne)" }}>
             {b}
           </span>
@@ -214,7 +214,7 @@ export default function HomePage() {
       {/* ── FILTER BAR ── */}
       <div className="max-w-6xl mx-auto px-6 py-8">
         <div className="flex gap-2.5 flex-wrap items-center bg-white border border-[oklch(80%_0.02_42.6)] rounded-2xl p-4">
-          <div className="flex-1 min-w-[180px] flex items-center gap-2 border border-[oklch(80%_0.02_42.6)] rounded-xl px-3 py-2 bg-[oklch(98%_0.008_42.6)]">
+          <div className="flex-1 min-w-45 flex items-center gap-2 border border-[oklch(80%_0.02_42.6)] rounded-xl px-3 py-2 bg-[oklch(98%_0.008_42.6)]">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-gray-400">
               <circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" />
             </svg>
@@ -239,7 +239,7 @@ export default function HomePage() {
       {/* ── JOBS GRID ── */}
       <div className="max-w-6xl mx-auto px-6 pb-20">
         <div className="flex items-center gap-4 mb-6">
-          <span className="text-[13px] font-bold uppercase tracking-[0.1em] text-gray-400">
+          <span className="text-[13px] font-bold uppercase tracking-widest text-gray-400">
             Latest Opportunities
           </span>
           <div className="flex-1 h-px bg-[oklch(80%_0.02_42.6)]" />

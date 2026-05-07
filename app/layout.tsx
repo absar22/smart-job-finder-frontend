@@ -3,7 +3,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Metadata } from "next";
-
+import Providers from "./providers";
 const inconsolata = Inconsolata({
   subsets: ["latin"],
   variable: "--font-inconsolata", // This matches your theme variable
@@ -26,11 +26,13 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inconsolata.variable}`}>
       <body className="min-h-screen flex flex-col font-inconsolata">
-        <Header />
-        <main className="flex-1">
-          {children}
-        </main>
-        <Footer />
+        <Providers>
+          <Header />
+          <main className="flex-1">
+            {children}
+          </main>
+          <Footer />
+        </Providers>
       </body>
     </html>
   );
