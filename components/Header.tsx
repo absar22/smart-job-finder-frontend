@@ -1,7 +1,26 @@
 "use client";
 import Link from "next/link";
-
+import React from "react";
+import { useMeQuery, useLogoutMutation } from "@/redux/api/authApi";
+import {useRouter} from "next/navigation";
 export default function Header() {
+  const {data:user,isLoading,error} = useMeQuery(undefined)
+  const [logout] = useLogoutMutation()
+  const router = useRouter()
+
+  const handleLogout = async() => {
+    try{
+      await logout().unwrap()
+      router.refresh() // Refresh to update the UI immediately
+      router.push('/signin')
+    }catch(err){
+      console.error(err)
+    }
+  }
+   if(isLoading){
+     return <div>Loading...</div>
+   }
+   
   return (
     <header className="sticky top-0 z-50 bg-[oklch(98%_0.008_42.6/0.88)] backdrop-blur-md border-b border-[oklch(80%_0.02_42.6)]">
       <div className="max-w-6xl mx-auto px-6 h-17 flex items-center justify-between">
@@ -38,8 +57,12 @@ export default function Header() {
             </Link>
           ))}
         </nav>
+          
 
+          {/* Auth buttons */}
          <div className="flex gap-2">
+          {!user && (
+           <>
         <button
           className="px-5 py-2.5 text-white rounded-full font-black text-[13px] uppercase tracking-wider cursor-pointer border-none transition-all hover:scale-105 active:scale-95"
           style={{
@@ -48,7 +71,7 @@ export default function Header() {
             boxShadow: "0 4px 16px oklch(70.2% 0.126 42.6 / 0.4)",
           }}
         >
-          Login
+          <Link href="/signin">Login</Link>
         </button>
         <button
           className="px-5 py-2.5 text-white rounded-full font-black text-[13px] uppercase tracking-wider cursor-pointer border-none transition-all hover:scale-105 active:scale-95"
@@ -58,8 +81,26 @@ export default function Header() {
             boxShadow: "0 4px 16px oklch(70.2% 0.126 42.6 / 0.4)",
           }}
         >
-          Register
+          <Link href="/signup">Register</Link>
         </button>
+         </>
+      )}
+
+          {user && (
+            <>
+              <button className="px-5 py-2.5 text-white rounded-full font-black text-[13px] uppercase"
+                style={{ background: "oklch(40% 0.1 42.6)" }}>
+                  <Link href="/dashboard">Dashboard</Link>
+              </button>
+
+              <button
+                onClick={handleLogout}
+                className="px-5 py-2.5 text-white rounded-full font-black text-[13px] uppercase"
+                style={{ background: "red" }}>
+                <Link href="/signin">Logout</Link>
+              </button>
+            </>
+          )}
         </div>
       </div>
     </header>

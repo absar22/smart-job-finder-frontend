@@ -6,7 +6,7 @@ import { Metadata } from "next";
 import Providers from "./providers";
 const inconsolata = Inconsolata({
   subsets: ["latin"],
-  variable: "--font-inconsolata", // This matches your theme variable
+  variable: "--font-inconsolata", 
 });
 export const metadata: Metadata = {
   title: "Job Finder",

@@ -73,7 +73,7 @@ export default function JobsClient({ page }: { page: number }) {
       {/* Divider label */}
       <div className="flex items-center gap-4 mb-6">
         <span
-          className="text-[13px] font-bold uppercase tracking-[0.1em] text-gray-400"
+          className="text-[13px] font-bold uppercase tracking-widest text-gray-400"
           style={{ fontFamily: "var(--font-inconsolata)" }}
         >
           Page {page} of {data.totalPages}
