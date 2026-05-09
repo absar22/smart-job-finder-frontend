@@ -4,6 +4,7 @@ interface AuthState {
   user: null | {
     _id: string
     email: string
+    name: string
   }
 
   loading: boolean

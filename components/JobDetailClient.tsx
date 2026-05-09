@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import { useGetJobBySlugQuery } from "@/redux/api/jobApi";
-
+import { useMeQuery } from "@/redux/api/authApi";
 export default function JobDetailClient({ slug }: { slug: string }) {
   const { data: job, isLoading, isError } = useGetJobBySlugQuery(slug);
+  const { data: user } = useMeQuery(undefined);
 
   if (isLoading) {
     return (
@@ -13,7 +14,16 @@ export default function JobDetailClient({ slug }: { slug: string }) {
       </div>
     );
   }
-
+  const handleApply = async() => {
+    if(!user){
+      alert("Please log in to apply for jobs.")
+    }
+    else if(job?.link?.startsWith("http")){
+      window.open(job.link, "_blank");
+    }else{
+      alert("Invalid job link.")
+    }
+  }
   if (isError || !job) {
     return (
       <div className="flex items-center justify-center min-h-[60vh] px-6">
@@ -147,6 +157,7 @@ export default function JobDetailClient({ slug }: { slug: string }) {
             </div>
 
             <button
+                onClick={handleApply}
               className="inline-flex items-center justify-center gap-2 px-8 py-3.5 text-white rounded-xl font-black text-[14px] uppercase tracking-wide border-none cursor-pointer transition-all hover:scale-105 active:scale-95 shrink-0"
               style={{
                 background: "oklch(70.2% 0.126 42.6)",

@@ -36,10 +36,20 @@ export const authApi = baseApi.injectEndpoints({
         url:"/auth/logout",
         method:"POST" 
       })
+    }),
+
+    // Upload image
+    uploadProfile: builder.mutation({
+      query:(formData) => ({
+        url:"/auth/upload-profile",
+        method:"PUT",
+        body:formData
+      }),
+      invalidatesTags:["User"]
     })
     
   }),
   overrideExisting: false,
 });
 
-export const { useSignupMutation, useLoginMutation, useMeQuery, useLogoutMutation } = authApi;
+export const { useSignupMutation, useLoginMutation, useMeQuery, useLogoutMutation, useUploadProfileMutation } = authApi;

@@ -1,8 +1,20 @@
 "use client"
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import Link from 'next/link'
-
+import { useDispatch, useSelector } from 'react-redux'
+import type { RootState } from '@/redux/store'
+import { useMeQuery } from '@/redux/api/authApi'
+import { setUser } from '@/redux/slices/authSlice'
 export default function DashboardPage() {
+    const dispatch = useDispatch()
+    const user = useSelector((state: RootState) => state.auth.user)
+    const {data} = useMeQuery(undefined)
+    useEffect(() => {
+        if(data?.user?.name){
+            dispatch(setUser(data.user))
+        }
+    }, [data, dispatch])
+    console.log("User in Dashboard:", user)
     return (
         <div className="flex h-screen bg-gray-100">
             {/* Sidebar */}
@@ -25,11 +37,21 @@ export default function DashboardPage() {
             <main className="flex-1 overflow-y-auto">
                 {/* Top Header */}
                 <header className="bg-white border-b h-16 flex items-center justify-between px-8">
-                    <h1 className="text-xl font-semibold text-gray-800">Overview</h1>
+                    <h1 className="text-xl font-semibold text-gray-800">Welcome back, {user?.name}</h1>
                     <div className="flex items-center gap-4">
-                        <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs">
+                        {/* <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs">
                             AA
+                        </div> */}
+                        <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs">
+                            {user?.name ? user.name.split(' ').map((word) => word[0].toUpperCase()): 'N:A'}
                         </div>
+
+                    <div className="text-sm">
+                        <p className="font-medium">{user?.name}</p>
+                        <p className="text-gray-400 text-xs">Developer</p>   {/* LATER ON it will come dynamic after api changes */}
+                    </div>
+                </div>
                     </div>
                 </header>
 

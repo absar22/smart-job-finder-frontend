@@ -1,4 +1,4 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<!-- This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
 
@@ -33,4 +33,99 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details. -->
+
+
+
+# Frontend README
+
+# Smart Job Finder Frontend
+
+Frontend application for Smart Job Finder built with Next.js, TypeScript, Tailwind CSS, and Redux Toolkit Query.
+
+---
+
+## Features
+
+* User authentication UI
+* Protected dashboard
+* Job listing pages
+* Pagination
+* Dynamic job detail pages
+* Apply button logic
+* User dropdown menu
+* Profile image upload
+* Responsive design
+
+---
+
+## Tech Stack
+
+* Next.js
+* TypeScript
+* Tailwind CSS
+* Redux Toolkit
+* Redux Toolkit Query
+
+---
+
+## Installation
+
+```bash
+npm install
+```
+
+---
+
+## Run Development Server
+
+```bash
+npm run dev
+```
+
+---
+
+## Frontend Features
+
+### Authentication
+
+* Signup page
+* Login page
+* Persistent user state
+* Logout functionality
+
+### Jobs
+
+* Browse all jobs
+* Dynamic slug routes
+* View detailed job information
+* Apply to jobs through external links
+
+### User Profile
+
+* Upload profile image
+* Dropdown profile menu
+* User initials fallback avatar
+
+---
+
+## State Management
+
+Redux Toolkit Query is used for:
+
+* Authentication APIs
+* Job APIs
+* Profile upload APIs
+* API caching
+* Loading and error states
+
+---
+
+## Future Improvements
+
+* Save jobs system
+* Resume upload
+* Edit profile page
+* Applied jobs tracking
+* Dark mode
+* Search and filtering
