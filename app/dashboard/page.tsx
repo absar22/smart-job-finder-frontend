@@ -1,114 +1,334 @@
-"use client"
-import React,{useState,useEffect} from 'react'
-import Link from 'next/link'
-import { useDispatch, useSelector } from 'react-redux'
-import type { RootState } from '@/redux/store'
-import { useMeQuery } from '@/redux/api/authApi'
-import { setUser } from '@/redux/slices/authSlice'
+"use client";
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { useDispatch, useSelector } from 'react-redux';
+import type { RootState } from '@/redux/store';
+import { useMeQuery, useLogoutMutation } from '@/redux/api/authApi';
+import { setUser } from '@/redux/slices/authSlice';
+import { useRouter } from 'next/navigation';
+
 export default function DashboardPage() {
-    const dispatch = useDispatch()
-    const user = useSelector((state: RootState) => state.auth.user)
-    const {data} = useMeQuery(undefined)
-    useEffect(() => {
-        if(data?.user?.name){
-            dispatch(setUser(data.user))
-        }
-    }, [data, dispatch])
-    console.log("User in Dashboard:", user)
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const user = useSelector((state: RootState) => state.auth.user);
+  const { data, isLoading, refetch } = useMeQuery(undefined);
+  const [logout] = useLogoutMutation();
+  const [activeTab, setActiveTab] = useState<'overview' | 'bookmarks' | 'applications' | 'profile'>('overview');
+
+  useEffect(() => {
+    if (data?.user) {
+      dispatch(setUser(data.user));
+    }
+  }, [data, dispatch]);
+
+  const handleLogout = async () => {
+    try {
+      await logout().unwrap();
+      router.push('/signin');
+      router.refresh();
+    } catch (err) {
+      console.error('Logout failed:', err);
+    }
+  };
+
+  if (isLoading) {
     return (
-        <div className="flex h-screen bg-gray-100">
-            {/* Sidebar */}
-            <aside className="w-64 bg-white border-r hidden md:flex flex-col">
-                <div className="p-6">
-                    <h2 className="text-2xl font-bold text-blue-600">Console</h2>
-                </div>
-                <nav className="flex-1 px-4 space-y-2">
-                    <Link href="/dashboard" className="block p-3 bg-blue-50 text-blue-700 rounded-lg font-medium">Dashboard</Link>
-                    <Link href="/projects" className="block p-3 text-gray-600 hover:bg-gray-50 rounded-lg">Projects</Link>
-                    <Link href="/team" className="block p-3 text-gray-600 hover:bg-gray-50 rounded-lg">Team</Link>
-                    <Link href="/settings" className="block p-3 text-gray-600 hover:bg-gray-50 rounded-lg">Settings</Link>
-                </nav>
-                <div className="p-4 border-t">
-                    <button className="w-full text-left p-2 text-red-500 font-medium hover:bg-red-50 rounded">Logout</button>
-                </div>
-            </aside>
-
-            {/* Main Content */}
-            <main className="flex-1 overflow-y-auto">
-                {/* Top Header */}
-                <header className="bg-white border-b h-16 flex items-center justify-between px-8">
-                    <h1 className="text-xl font-semibold text-gray-800">Welcome back, {user?.name}</h1>
-                    <div className="flex items-center gap-4">
-                        {/* <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs">
-                            AA
-                        </div> */}
-                        <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs">
-                            {user?.name ? user.name.split(' ').map((word) => word[0].toUpperCase()): 'N:A'}
-                        </div>
-
-                    <div className="text-sm">
-                        <p className="font-medium">{user?.name}</p>
-                        <p className="text-gray-400 text-xs">Developer</p>   {/* LATER ON it will come dynamic after api changes */}
-                    </div>
-                </div>
-                    </div>
-                </header>
-
-                <div className="p-8">
-                    {/* Stats Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                        <div className="bg-white p-6 rounded-xl border shadow-sm">
-                            <p className="text-sm text-gray-500 uppercase font-bold">Total Users</p>
-                            <h3 className="text-3xl font-bold mt-1">2,543</h3>
-                            <p className="text-xs text-green-500 mt-2">↑ 12% from last month</p>
-                        </div>
-                        <div className="bg-white p-6 rounded-xl border shadow-sm">
-                            <p className="text-sm text-gray-500 uppercase font-bold">Active Sessions</p>
-                            <h3 className="text-3xl font-bold mt-1">432</h3>
-                            <p className="text-xs text-blue-500 mt-2">Live currently</p>
-                        </div>
-                        <div className="bg-white p-6 rounded-xl border shadow-sm">
-                            <p className="text-sm text-gray-500 uppercase font-bold">Server Load</p>
-                            <h3 className="text-3xl font-bold mt-1">18%</h3>
-                            <p className="text-xs text-gray-400 mt-2">Healthy status</p>
-                        </div>
-                    </div>
-
-                    {/* Recent Activity Table */}
-                    <div className="bg-white rounded-xl border shadow-sm overflow-hidden">
-                        <div className="p-6 border-b">
-                            <h2 className="font-bold text-gray-800">Recent Activity</h2>
-                        </div>
-                        <table className="w-full text-left border-collapse">
-                            <thead>
-                                <tr className="bg-gray-50">
-                                    <th className="p-4 text-xs font-bold text-gray-500 uppercase">Project</th>
-                                    <th className="p-4 text-xs font-bold text-gray-500 uppercase">Status</th>
-                                    <th className="p-4 text-xs font-bold text-gray-500 uppercase">Date</th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y">
-                                <tr>
-                                    <td className="p-4 text-sm font-medium">JiraChat Architecture</td>
-                                    <td className="p-4"><span className="px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full">Completed</span></td>
-                                    <td className="p-4 text-sm text-gray-500">2026-05-01</td>
-                                </tr>
-                                <tr>
-                                    <td className="p-4 text-sm font-medium">Legal Connect UI</td>
-                                    <td className="p-4"><span className="px-2 py-1 bg-yellow-100 text-yellow-700 text-xs rounded-full">In Progress</span></td>
-                                    <td className="p-4 text-sm text-gray-500">2026-05-07</td>
-                                </tr>
-                                <tr>
-                                    <td className="p-4 text-sm font-medium">Vehicle Challan API</td>
-                                    <td className="p-4"><span className="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full">Review</span></td>
-                                    <td className="p-4 text-sm text-gray-500">2026-05-08</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </main>
+      <div className="flex h-screen items-center justify-center bg-gray-100">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading dashboard...</p>
         </div>
-    )
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex h-screen bg-gray-100">
+      {/* Sidebar */}
+      <aside className="w-64 bg-white border-r hidden md:flex flex-col">
+        <div className="p-6">
+          <Link href="/" className="text-2xl font-bold text-orange-500">
+            Job<span className="text-gray-800">Finder</span>
+          </Link>
+        </div>
+        
+        <nav className="flex-1 px-4 space-y-2">
+          <button
+            onClick={() => setActiveTab('overview')}
+            className={`w-full text-left p-3 rounded-lg font-medium transition-colors ${
+              activeTab === 'overview' 
+                ? 'bg-orange-50 text-orange-700' 
+                : 'text-gray-600 hover:bg-gray-50'
+            }`}
+          >
+            📊 Dashboard Overview
+          </button>
+          
+          <button
+            onClick={() => setActiveTab('bookmarks')}
+            className={`w-full text-left p-3 rounded-lg font-medium transition-colors ${
+              activeTab === 'bookmarks' 
+                ? 'bg-orange-50 text-orange-700' 
+                : 'text-gray-600 hover:bg-gray-50'
+            }`}
+          >
+            🔖 Bookmarked Jobs
+            <span className="ml-2 text-xs text-gray-400">(Coming Soon)</span>
+          </button>
+          
+          <button
+            onClick={() => setActiveTab('applications')}
+            className={`w-full text-left p-3 rounded-lg font-medium transition-colors ${
+              activeTab === 'applications' 
+                ? 'bg-orange-50 text-orange-700' 
+                : 'text-gray-600 hover:bg-gray-50'
+            }`}
+          >
+            📝 My Applications
+            <span className="ml-2 text-xs text-gray-400">(Coming Soon)</span>
+          </button>
+          
+          <button
+            onClick={() => setActiveTab('profile')}
+            className={`w-full text-left p-3 rounded-lg font-medium transition-colors ${
+              activeTab === 'profile' 
+                ? 'bg-orange-50 text-orange-700' 
+                : 'text-gray-600 hover:bg-gray-50'
+            }`}
+          >
+            👤 Profile Settings
+          </button>
+        </nav>
+        
+        <div className="p-4 border-t">
+          <button
+            onClick={handleLogout}
+            className="w-full text-left p-3 text-red-500 font-medium hover:bg-red-50 rounded-lg transition-colors"
+          >
+            🚪 Logout
+          </button>
+        </div>
+       
+      </aside>
+
+      {/* Main Content */}
+      <main className="flex-1 overflow-y-auto">
+        {/* Top Header */}
+        <header className="bg-white border-b h-16 flex items-center justify-between px-8 sticky top-0 z-10">
+          <h1 className="text-xl font-semibold text-gray-800">
+            {activeTab === 'overview' && 'Dashboard Overview'}
+            {activeTab === 'bookmarks' && 'Bookmarked Jobs'}
+            {activeTab === 'applications' && 'My Applications'}
+            {activeTab === 'profile' && 'Profile Settings'}
+          </h1>
+          
+        
+        </header>
+
+        <div className="p-8">
+          {/* Overview Tab */}
+          {activeTab === 'overview' && (
+            <div className="space-y-6">
+              {/* Welcome Section */}
+              <div className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-2xl p-8 text-white">
+                <h2 className="text-2xl font-bold mb-2">
+                  Welcome back, {user?.name?.split(' ')[0] || 'User'}! 👋
+                </h2>
+                <p className="opacity-90">
+                  Ready to find your next job opportunity? Start exploring new positions today.
+                </p>
+                <Link
+                  href="/jobs"
+                  className="inline-block mt-4 px-6 py-2 bg-white text-orange-600 rounded-lg font-semibold hover:shadow-lg transition-shadow"
+                >
+                  Browse Jobs →
+                </Link>
+              </div>
+
+              {/* Stats Cards */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="bg-white p-6 rounded-xl border shadow-sm hover:shadow-md transition-shadow">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-2xl">
+                      🔖
+                    </div>
+                    <span className="text-xs text-gray-400">Coming Soon</span>
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-800">0</h3>
+                  <p className="text-gray-600 text-sm mt-1">Saved Jobs</p>
+                  <p className="text-xs text-gray-400 mt-2">Jobs you've bookmarked</p>
+                </div>
+
+                <div className="bg-white p-6 rounded-xl border shadow-sm hover:shadow-md transition-shadow">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-2xl">
+                      📝
+                    </div>
+                    <span className="text-xs text-gray-400">Coming Soon</span>
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-800">0</h3>
+                  <p className="text-gray-600 text-sm mt-1">Applications Sent</p>
+                  <p className="text-xs text-gray-400 mt-2">Track your applications</p>
+                </div>
+
+                <div className="bg-white p-6 rounded-xl border shadow-sm hover:shadow-md transition-shadow">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center text-2xl">
+                      📄
+                    </div>
+                    <span className="text-xs text-gray-400">Coming Soon</span>
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-800">0</h3>
+                  <p className="text-gray-600 text-sm mt-1">Resume Views</p>
+                  <p className="text-xs text-gray-400 mt-2">Employers who viewed your resume</p>
+                </div>
+              </div>
+
+              {/* Recent Activity Placeholder */}
+              <div className="bg-white rounded-xl border shadow-sm overflow-hidden">
+                <div className="p-6 border-b">
+                  <h2 className="font-bold text-gray-800">Recent Activity</h2>
+                  <p className="text-sm text-gray-500 mt-1">Your job search activity will appear here</p>
+                </div>
+                <div className="p-8 text-center text-gray-500">
+                  <p className="text-4xl mb-2">🔍</p>
+                  <p>No recent activity yet</p>
+                  <p className="text-sm mt-1">Start applying to jobs to see your activity here</p>
+                  <Link
+                    href="/jobs"
+                    className="inline-block mt-4 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
+                  >
+                    Browse Jobs
+                  </Link>
+                </div>
+              </div>
+
+              {/* Recommended Jobs Placeholder */}
+              <div className="bg-white rounded-xl border shadow-sm overflow-hidden">
+                <div className="p-6 border-b">
+                  <h2 className="font-bold text-gray-800">Recommended For You</h2>
+                  <p className="text-sm text-gray-500 mt-1">Jobs tailored to your profile</p>
+                </div>
+                <div className="p-8 text-center text-gray-500">
+                  <p className="text-4xl mb-2">💼</p>
+                  <p>Job recommendations will appear here</p>
+                  <p className="text-sm mt-1">Complete your profile to get personalized recommendations</p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Bookmarks Tab (Coming Soon) */}
+          {activeTab === 'bookmarks' && (
+            <div className="bg-white rounded-xl border shadow-sm overflow-hidden">
+              <div className="p-12 text-center">
+                <div className="text-6xl mb-4">🔖</div>
+                <h3 className="text-xl font-semibold text-gray-800 mb-2">Bookmarks Coming Soon!</h3>
+                <p className="text-gray-600 mb-6">
+                  You'll be able to save and manage your favorite jobs here.
+                </p>
+                <div className="bg-gray-50 rounded-lg p-4 max-w-md mx-auto">
+                  <p className="text-sm text-gray-500">✨ Future Features:</p>
+                  <ul className="text-sm text-gray-600 mt-2 space-y-1">
+                    <li>• Save jobs to apply later</li>
+                    <li>• Organize jobs by categories</li>
+                    <li>• Get alerts for saved job updates</li>
+                    <li>• Share saved jobs with friends</li>
+                  </ul>
+                </div>
+                <Link
+                  href="/jobs"
+                  className="inline-block mt-6 px-6 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
+                >
+                  Browse Jobs to Bookmark
+                </Link>
+              </div>
+            </div>
+          )}
+
+          {/* Applications Tab (Coming Soon) */}
+          {activeTab === 'applications' && (
+            <div className="bg-white rounded-xl border shadow-sm overflow-hidden">
+              <div className="p-12 text-center">
+                <div className="text-6xl mb-4">📝</div>
+                <h3 className="text-xl font-semibold text-gray-800 mb-2">Track Applications Coming Soon!</h3>
+                <p className="text-gray-600 mb-6">
+                  Monitor the status of all your job applications in one place.
+                </p>
+                <div className="bg-gray-50 rounded-lg p-4 max-w-md mx-auto">
+                  <p className="text-sm text-gray-500">✨ Future Features:</p>
+                  <ul className="text-sm text-gray-600 mt-2 space-y-1">
+                    <li>• Track application status (Applied, Interview, Offer, Rejected)</li>
+                    <li>• Add interview notes and reminders</li>
+                    <li>• View application history and analytics</li>
+                    <li>• Receive status update notifications</li>
+                  </ul>
+                </div>
+                <Link
+                  href="/jobs"
+                  className="inline-block mt-6 px-6 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
+                >
+                  Start Applying to Jobs
+                </Link>
+              </div>
+            </div>
+          )}
+
+          {/* Profile Tab */}
+          {activeTab === 'profile' && (
+            <div className="max-w-2xl mx-auto space-y-6">
+              {/* Profile Card */}
+              <div className="bg-white rounded-xl border shadow-sm p-8">
+                <div className="flex items-center gap-6 mb-8">
+                  <div className="w-24 h-24 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full flex items-center justify-center text-white text-3xl font-bold">
+                    {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                  </div>
+                  <div>
+                    <h2 className="text-2xl font-bold text-gray-800">{user?.name || 'User Name'}</h2>
+                    <p className="text-gray-600">{user?.email || 'user@example.com'}</p>
+                    <p className="text-sm text-gray-500 mt-1">Member since {new Date().getFullYear()}</p>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="border-b pb-4">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                    <p className="text-gray-900">{user?.name || 'Not set'}</p>
+                  </div>
+                  
+                  <div className="border-b pb-4">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                    <p className="text-gray-900">{user?.email || 'Not set'}</p>
+                  </div>
+                  
+                  <div className="border-b pb-4">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Account Status</label>
+                    <span className="inline-block px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full">Active</span>
+                  </div>
+                </div>
+
+                <div className="mt-8 pt-6 border-t">
+                  <p className="text-sm text-gray-500 text-center">
+                    More profile settings (resume upload, skills, experience) coming soon!
+                  </p>
+                </div>
+              </div>
+
+              {/* Placeholder for Resume Upload */}
+              <div className="bg-white rounded-xl border shadow-sm p-8 text-center">
+                <div className="text-4xl mb-3">📄</div>
+                <h3 className="text-lg font-semibold text-gray-800 mb-2">Resume Upload (Coming Soon)</h3>
+                <p className="text-gray-600 text-sm">
+                  You'll be able to upload and manage your resume here.
+                </p>
+                <div className="mt-4 p-3 bg-gray-50 rounded-lg inline-block">
+                  <p className="text-xs text-gray-500">Supported formats: PDF, DOC, DOCX</p>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </main>
+    </div>
+  );
 }

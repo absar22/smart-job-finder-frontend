@@ -24,7 +24,12 @@ export default function SigninPage() {
             setError('Invalid email or password')
         }
     }
- 
+     const displayError = () => {
+       if (error) {
+         return <div className="text-red-500 text-center">{error}</div>;
+       }
+     };
+
     return (
         // Added flex-col to stack the title, form, and footer link vertically
         <div className='flex flex-col items-center justify-center h-screen w-full'>
@@ -53,6 +58,7 @@ export default function SigninPage() {
                     >
                         Signin
                     </button>
+                      {displayError()}
                 </form>
 
                 <p className='mt-6 text-center text-gray-600'>

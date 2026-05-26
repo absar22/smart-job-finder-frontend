@@ -94,6 +94,7 @@ export default function JobCard({ job }: { job: Job }) {
             </span>
           )}
           <button
+           disabled
             className="px-4 py-2 text-white rounded-full text-[12px] font-bold border-none cursor-pointer transition-transform hover:scale-105 active:scale-95"
             style={{
               background: "oklch(70.2% 0.126 42.6)",

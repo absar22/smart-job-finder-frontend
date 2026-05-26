@@ -5,7 +5,7 @@ import { useMeQuery, useLogoutMutation, useUploadProfileMutation } from "@/redux
 import { useRouter } from "next/navigation";
 
 export default function Header() {
-  const { data: user, isLoading, error } = useMeQuery(undefined);
+  const { data: user } = useMeQuery(undefined);
   const [logout] = useLogoutMutation();
   const router = useRouter();
   const [uploadProfile] = useUploadProfileMutation();
@@ -15,7 +15,7 @@ export default function Header() {
     try {
       await logout().unwrap();
       router.refresh();
-      router.push('/signin');
+      router.push('/');
     } catch (err) {
       console.error('Logout failed:', err);
     }
@@ -48,9 +48,9 @@ export default function Header() {
     }
   };
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  // if (isLoading) {
+  //   return <div>Loading...</div>;
+  // }
 
   return (
     <header className="sticky top-0 z-50 bg-[oklch(98%_0.008_42.6/0.88)] backdrop-blur-md border-b border-[oklch(80%_0.02_42.6)]">

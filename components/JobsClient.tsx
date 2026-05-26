@@ -9,13 +9,13 @@ const LIMIT = 5;
 export default function JobsClient({ page }: { page: number }) {
   const { data, isLoading, isError } = useGetJobsQuery({ page, limit: LIMIT });
 
-  if (isLoading) {
-    return (
-      <main className="max-w-6xl mx-auto px-6 py-12">
-        <div className="text-gray-500">Loading jobs…</div>
-      </main>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <main className="max-w-6xl mx-auto px-6 py-12">
+  //       <div className="text-gray-500">Loading jobs…</div>
+  //     </main>
+  //   );
+  // }
 
   if (isError || !data) {
     return (
