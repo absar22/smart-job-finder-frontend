@@ -1,11 +1,13 @@
 "use client";
-
+import Bookmark from '@/components/Bookmark'
+import { useSaveJobMutation,useRemoveJobMutation } from '@/redux/api/savedJobsApi';
 export interface Job {
   _id: string;
   title: string;
   company: string;
   location: string;
   description: string;
+  isBookmarked?: boolean;
   type?: "Remote" | "Full-time" | "Contract";
   salary?: string;
   color?: string;
@@ -20,6 +22,8 @@ const typeStyles: Record<string, string> = {
   Contract: "bg-gray-100 text-gray-500 border-gray-200",
 };
 
+
+
 export default function JobCard({ job }: { job: Job }) {
   const type = job.type ?? "Full-time";
   const color = job.color ?? "oklch(70.2% 0.126 42.6)";
@@ -31,6 +35,28 @@ export default function JobCard({ job }: { job: Job }) {
       .join("")
       .slice(0, 2)
       .toUpperCase();
+
+      const [saveJob] = useSaveJobMutation();
+const [removeJob] = useRemoveJobMutation();
+
+const handleBookmark = async (e: React.MouseEvent) => {
+  e.preventDefault();
+  e.stopPropagation();
+
+  try {
+    if (job.isBookmarked) {
+      await removeJob({
+        jobId: job._id
+      }).unwrap();
+    } else {
+      await saveJob({
+        jobId: job._id
+      }).unwrap();
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
 
   return (
     <div className="group relative bg-white border border-[oklch(80%_0.02_42.6)] rounded-2xl p-6 cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:shadow-xl hover:border-[oklch(70.2%_0.126_42.6/0.35)] overflow-hidden">
@@ -103,6 +129,7 @@ export default function JobCard({ job }: { job: Job }) {
           >
             Apply →
           </button>
+       <Bookmark isBookmarked={job.isBookmarked ?? false} onClick={handleBookmark} />
         </div>
       </div>
     </div>

@@ -3,11 +3,12 @@
 import Link from "next/link";
 import JobCard from "@/components/JobCard";
 import { useGetJobsQuery } from "@/redux/api/jobApi";
-
+import { useGetSavedJobsQuery } from "@/redux/api/savedJobsApi";
 const LIMIT = 5;
 
 export default function JobsClient({ page }: { page: number }) {
   const { data, isLoading, isError } = useGetJobsQuery({ page, limit: LIMIT });
+  const {data:savedJobs = []} = useGetSavedJobsQuery();
 
   // if (isLoading) {
   //   return (
@@ -37,6 +38,7 @@ export default function JobsClient({ page }: { page: number }) {
         typeof job.salary === "number"
           ? `$${job.salary.toLocaleString()}`
           : undefined,
+       isBookmarked: savedJobs.some((savedJob) => savedJob.job._id === job._id),
     },
   }));
 

@@ -10,7 +10,7 @@ export const baseApi = createApi({
     baseUrl: BASE_URL,
     credentials: "include", // important for cookies
   }),
-  tagTypes: ["Jobs", "Job", "Auth", "User"],
+  tagTypes: ["Jobs", "Job", "Auth", "User", "SavedJobs"],   //this allows RTK query cache invalidation.
   endpoints: () => ({}),
 });
 
