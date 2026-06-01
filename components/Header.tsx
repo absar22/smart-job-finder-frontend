@@ -80,7 +80,7 @@ export default function Header() {
           {["Browse", "Companies", "Post Job"].map((item) => (
             <Link
               key={item}
-              href={item === "Browse" ? "/jobs" : item === "Post Job" ? "/post" : "/companies"}
+              href={item === "Browse" ? "/jobs" : item === "Post Job" ? "/admin/createjobs" : "/companies"}
               className="text-[13px] font-bold uppercase tracking-[0.12em] text-gray-500 hover:text-gray-900 transition-colors no-underline"
             >
               {item}

@@ -1,3 +1,4 @@
+
 import { baseApi } from "./baseApi";
 
 export interface Job {
@@ -19,6 +20,7 @@ export interface JobsResponse {
   currentPage: number;
   totalPages: number;
 }
+
 
 export const jobApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -44,9 +46,18 @@ export const jobApi = baseApi.injectEndpoints({
             ]
           : [],
     }),
+    createJob: builder.mutation<Job, Partial<Job>>({
+  query: (jobData) => ({
+    url: '/jobs',
+    method: 'POST',
+    body: jobData,
   }),
+  invalidatesTags: [{ type: 'Jobs', id: 'LIST' }],
+}),
+  }),
+
   overrideExisting: false,
 });
 
-export const { useGetJobsQuery, useGetJobBySlugQuery } = jobApi;
+export const { useGetJobsQuery, useGetJobBySlugQuery, useCreateJobMutation } = jobApi;
 

@@ -4,19 +4,26 @@ import Link from "next/link";
 import JobCard from "@/components/JobCard";
 import { useGetJobsQuery } from "@/redux/api/jobApi";
 import { useGetSavedJobsQuery } from "@/redux/api/savedJobsApi";
+import { useMeQuery } from '@/redux/api/authApi';
 const LIMIT = 5;
 
 export default function JobsClient({ page }: { page: number }) {
   const { data, isLoading, isError } = useGetJobsQuery({ page, limit: LIMIT });
-  const {data:savedJobs = []} = useGetSavedJobsQuery();
+  const { data: me } = useMeQuery(undefined);
+  const {data:savedJobs = []} = useGetSavedJobsQuery(
+    undefined,
+    {
+      skip: !me?.user?._id, // This skips the query if the user is not logged in
+    }
+  );
 
-  // if (isLoading) {
-  //   return (
-  //     <main className="max-w-6xl mx-auto px-6 py-12">
-  //       <div className="text-gray-500">Loading jobs…</div>
-  //     </main>
-  //   );
-  // }
+  if (isLoading) {
+    return (
+      <main className="max-w-6xl mx-auto px-6 py-12">
+        <div className="text-gray-500">Loading jobs…</div>
+      </main>
+    );
+  }
 
   if (isError || !data) {
     return (

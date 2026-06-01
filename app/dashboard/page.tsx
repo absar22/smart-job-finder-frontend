@@ -6,7 +6,8 @@ import type { RootState } from '@/redux/store';
 import { useMeQuery, useLogoutMutation } from '@/redux/api/authApi';
 import { setUser } from '@/redux/slices/authSlice';
 import { useRouter } from 'next/navigation';
-
+import { useGetSavedJobsQuery } from '@/redux/api/savedJobsApi';
+import BookmarkedJobs from '@/components/BookmarkedJobs';
 export default function DashboardPage() {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -14,7 +15,12 @@ export default function DashboardPage() {
   const { data, isLoading, refetch } = useMeQuery(undefined);
   const [logout] = useLogoutMutation();
   const [activeTab, setActiveTab] = useState<'overview' | 'bookmarks' | 'applications' | 'profile'>('overview');
-
+  const {data:savedJobs = []} = useGetSavedJobsQuery(
+    undefined,
+    {
+      skip: !data?.user?._id, // This skips the query if the user is not logged in
+    }
+  );
   useEffect(() => {
     if (data?.user) {
       dispatch(setUser(data.user));
@@ -73,7 +79,7 @@ export default function DashboardPage() {
             }`}
           >
             🔖 Bookmarked Jobs
-            <span className="ml-2 text-xs text-gray-400">(Coming Soon)</span>
+            {/* <span className="ml-2 text-xs text-gray-400">(Coming Soon)</span> */}
           </button>
           
           <button
@@ -152,9 +158,12 @@ export default function DashboardPage() {
                     <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-2xl">
                       🔖
                     </div>
-                    <span className="text-xs text-gray-400">Coming Soon</span>
+                    {/* <span className="text-xs text-gray-400">Coming Soon</span> */}
+                    {savedJobs.length === 0 && (
+                      <span className="text-xs text-gray-400">No saved jobs</span>
+                    )}
                   </div>
-                  <h3 className="text-2xl font-bold text-gray-800">0</h3>
+                  <h3 className="text-2xl font-bold text-gray-800">{savedJobs.length}</h3>
                   <p className="text-gray-600 text-sm mt-1">Saved Jobs</p>
                   <p className="text-xs text-gray-400 mt-2">Jobs you've bookmarked</p>
                 </div>
@@ -218,33 +227,9 @@ export default function DashboardPage() {
             </div>
           )}
 
-          {/* Bookmarks Tab (Coming Soon) */}
-          {activeTab === 'bookmarks' && (
-            <div className="bg-white rounded-xl border shadow-sm overflow-hidden">
-              <div className="p-12 text-center">
-                <div className="text-6xl mb-4">🔖</div>
-                <h3 className="text-xl font-semibold text-gray-800 mb-2">Bookmarks Coming Soon!</h3>
-                <p className="text-gray-600 mb-6">
-                  You'll be able to save and manage your favorite jobs here.
-                </p>
-                <div className="bg-gray-50 rounded-lg p-4 max-w-md mx-auto">
-                  <p className="text-sm text-gray-500">✨ Future Features:</p>
-                  <ul className="text-sm text-gray-600 mt-2 space-y-1">
-                    <li>• Save jobs to apply later</li>
-                    <li>• Organize jobs by categories</li>
-                    <li>• Get alerts for saved job updates</li>
-                    <li>• Share saved jobs with friends</li>
-                  </ul>
-                </div>
-                <Link
-                  href="/jobs"
-                  className="inline-block mt-6 px-6 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
-                >
-                  Browse Jobs to Bookmark
-                </Link>
-              </div>
-            </div>
-          )}
+          {/* Bookmarks Tab */}
+          {activeTab === "bookmarks" && (
+          <BookmarkedJobs />)}
 
           {/* Applications Tab (Coming Soon) */}
           {activeTab === 'applications' && (

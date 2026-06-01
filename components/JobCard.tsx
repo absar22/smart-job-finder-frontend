@@ -130,6 +130,7 @@ const handleBookmark = async (e: React.MouseEvent) => {
             Apply →
           </button>
        <Bookmark isBookmarked={job.isBookmarked ?? false} onClick={handleBookmark} />
+       <span>{job.isBookmarked ? "Saved" : "Save"}</span>
         </div>
       </div>
     </div>
