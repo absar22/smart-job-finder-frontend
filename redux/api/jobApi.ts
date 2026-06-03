@@ -24,8 +24,8 @@ export interface JobsResponse {
 
 export const jobApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getJobs: builder.query<JobsResponse, { page: number; limit: number }>({
-      query: ({ page, limit }) => `/jobs?page=${page}&limit=${limit}`,
+    getJobs: builder.query<JobsResponse, { page: number; limit: number; location?:string; company?:string;skills?:string }>({
+      query: ({ page, limit,location,company,skills }) => `/jobs?page=${page}&limit=${limit}${location ? `&location=${location}` : ''}${company ? `&company=${company}` : ''}${skills ? `&skills=${skills}` : ''}`,
       providesTags: (result) =>
         result
           ? [

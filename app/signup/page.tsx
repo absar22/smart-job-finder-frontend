@@ -3,12 +3,13 @@ import React, {useState,useEffect} from 'react'
 import Link from 'next/link'
 import { useSignupMutation } from '@/redux/api/authApi'
 import { useRouter } from 'next/navigation'
-
+import {Eye,EyeOff} from 'lucide-react'
 export default function SignupPage() {
     const [name,setName] = useState('')
     const [email,setEmail] = useState('')
     const [password,setPassword] = useState('')
     const [confirmPassword,setConfirmPassword] = useState('')
+    const [showPassword,setShowPassword]= useState(false)
     const [signup,{isLoading}] = useSignupMutation()
     const router = useRouter()
     const handleSubmit = async(e:React.FormEvent<HTMLFormElement>)=>{
@@ -45,13 +46,22 @@ export default function SignupPage() {
                         onChange={(e) => setEmail(e.target.value)}
                         className='border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400' 
                     />
+                    <div className='relative'>
                     <input 
-                        type='password' 
+                        type={showPassword? 'text' : 'password'}
                         placeholder='Password'
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className='border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400' 
+                        className='w-full border p-2 pr-10 rounded focus:outline-none focus:ring-2 focus:ring-blue-400' 
                     />
+                    <button 
+                    type='button'
+                    onClick={() => setShowPassword(!showPassword)}
+                     className="absolute right-3 top-1/2 -translate-y-1/2"
+                    >
+                     {showPassword ? <EyeOff size={20}/> : <Eye size={20}/>}
+                    </button>
+                    </div>
                     <input 
                         type='password' 
                         placeholder='Confirm Password'
