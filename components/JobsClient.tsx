@@ -5,18 +5,28 @@ import JobCard from "@/components/JobCard";
 import { useGetJobsQuery } from "@/redux/api/jobApi";
 import { useGetSavedJobsQuery } from "@/redux/api/savedJobsApi";
 import { useMeQuery } from '@/redux/api/authApi';
+import JobSearchBar from "./JobSearchBar";
+import { useRouter,useSearchParams } from "next/navigation";
 const LIMIT = 5;
 
 export default function JobsClient({ page }: { page: number }) {
-  const { data, isLoading, isError } = useGetJobsQuery({ page, limit: LIMIT });
-  const { data: me } = useMeQuery(undefined);
+    const { data: me } = useMeQuery(undefined);
   const {data:savedJobs = []} = useGetSavedJobsQuery(
     undefined,
     {
       skip: !me?.user?._id, // This skips the query if the user is not logged in
     }
   );
+    const router = useRouter()
+  const searchParams = useSearchParams()
+  const location = searchParams.get('location') || ''
 
+  const { data, isLoading, isError } = useGetJobsQuery({ page, limit: LIMIT , location });
+
+   const handleLocationChange = (location :string) => {
+        router.push(`/jobs?page=${page}&location=${encodeURIComponent(location)}`);
+   }
+  
   if (isLoading) {
     return (
       <main className="max-w-6xl mx-auto px-6 py-12">
@@ -48,9 +58,17 @@ export default function JobsClient({ page }: { page: number }) {
        isBookmarked: savedJobs.some((savedJob) => savedJob.job._id === job._id),
     },
   }));
+  if (jobs.length === 0) {
+  return (
+    <div className="text-gray-500 text-center py-20">
+      No jobs found.
+    </div>
+  )
+}
 
   return (
     <main className="max-w-6xl mx-auto px-6 py-12">
+     
       {/* Page Header */}
       <div className="mb-10">
         <div
@@ -78,7 +96,7 @@ export default function JobsClient({ page }: { page: number }) {
           Find your next opportunity from top companies worldwide.
         </p>
       </div>
-
+      <JobSearchBar onLocationChange={handleLocationChange} />
       {/* Divider label */}
       <div className="flex items-center gap-4 mb-6">
         <span
@@ -89,7 +107,6 @@ export default function JobsClient({ page }: { page: number }) {
         </span>
         <div className="flex-1 h-px bg-[oklch(80%_0.02_42.6)]" />
       </div>
-
       {/* Job List */}
       <div className="flex flex-col gap-4">
         {jobs.map((job, i) => (
@@ -108,7 +125,7 @@ export default function JobsClient({ page }: { page: number }) {
       <div className="flex justify-center items-center gap-3 mt-12">
         {page > 1 ? (
           <Link
-            href={`/jobs?page=${page - 1}`}
+            href={`/jobs?page=${page - 1}?location=${encodeURIComponent(location)}`}
             className="flex items-center gap-1.5 px-5 py-2.5 rounded-full border-[1.5px] font-bold text-[13px] uppercase tracking-wide no-underline transition-all hover:border-[oklch(70.2%_0.126_42.6)] hover:text-[oklch(70.2%_0.126_42.6)]"
             style={{
               borderColor: "oklch(80% 0.02 42.6)",
@@ -135,7 +152,7 @@ export default function JobsClient({ page }: { page: number }) {
           {Array.from({ length: data.totalPages }, (_, i) => i + 1).map((p) => (
             <Link
               key={p}
-              href={`/jobs?page=${p}`}
+              href={`/jobs?page=${p}&location=${encodeURIComponent(location)}`}
               className="w-9 h-9 flex items-center justify-center rounded-full font-black text-[13px] no-underline transition-all"
               style={{
                 fontFamily: "var(--font-inconsolata)",
