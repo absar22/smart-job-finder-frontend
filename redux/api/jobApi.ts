@@ -12,6 +12,7 @@ export interface Job {
   skills: string[];
   slug: string;
   createdAt?: string;
+  isBookmarked?: boolean;
 }
 
 export interface JobsResponse {

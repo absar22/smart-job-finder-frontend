@@ -1,18 +1,7 @@
 "use client";
 import Bookmark from '@/components/Bookmark'
 import { useSaveJobMutation,useRemoveJobMutation } from '@/redux/api/savedJobsApi';
-export interface Job {
-  _id: string;
-  title: string;
-  company: string;
-  location: string;
-  description: string;
-  isBookmarked?: boolean;
-  type?: "Remote" | "Full-time" | "Contract";
-  salary?: string;
-  color?: string;
-  initials?: string;
-}
+import type { Job } from '@/redux/api/jobApi';
 
 const typeStyles: Record<string, string> = {
   Remote:
@@ -25,11 +14,9 @@ const typeStyles: Record<string, string> = {
 
 
 export default function JobCard({ job }: { job: Job }) {
-  const type = job.type ?? "Full-time";
-  const color = job.color ?? "oklch(70.2% 0.126 42.6)";
-  const initials =
-    job.initials ??
-    job.company
+  const type =  "Full-time";
+  const color =  "oklch(70.2% 0.126 42.6)";
+  const initials =  job.company
       .split(" ")
       .map((w) => w[0])
       .join("")
@@ -116,7 +103,7 @@ const handleBookmark = async (e: React.MouseEvent) => {
               className="font-bold text-[15px]"
               style={{ fontFamily: "var(--font-syne)" }}
             >
-              {job.salary}
+              {job.salary.toLocaleString()}
             </span>
           )}
           <button

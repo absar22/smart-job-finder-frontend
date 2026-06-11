@@ -51,11 +51,11 @@ export default function JobsClient({ page }: { page: number }) {
       company: job.company,
       location: job.location,
       description: job.description,
-      salary:
-        typeof job.salary === "number"
-          ? `$${job.salary.toLocaleString()}`
-          : undefined,
+      salary: job.salary,
        isBookmarked: savedJobs.some((savedJob) => savedJob.job._id === job._id),
+       link: job.link ?? "",
+      skills: job.skills ?? [],
+      slug: job.slug ?? "",
     },
   }));
   if (jobs.length === 0) {

@@ -50,10 +50,6 @@ export default function BookmarkedJobs() {
           job={{
             ...savedJob.job,
             isBookmarked: true, // without this prop clicking the bookmark inside the Bookmarked Jobs page tries to save again instead of removing.
-            salary:
-              typeof savedJob.job.salary === "number"
-                ? `$${savedJob.job.salary.toLocaleString()}`
-                : undefined,
           }}
         />
         </Link>
