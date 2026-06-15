@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import { useGetSavedJobsQuery } from '@/redux/api/savedJobsApi';
 import BookmarkedJobs from '@/components/BookmarkedJobs';
 import ApplicationTracking from '@/components/ApplicationTracking';
+import { useGetTrackingJobsQuery } from '@/redux/api/trackingJobApi';
 export default function DashboardPage() {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -27,6 +28,12 @@ export default function DashboardPage() {
       dispatch(setUser(data.user));
     }
   }, [data, dispatch]);
+  const { data: applications } = useGetTrackingJobsQuery(
+    undefined,
+    {
+      skip: !data?.user?._id, // This skips the query if the user is not logged in
+    }
+  );
 
   const handleLogout = async () => {
     try {
@@ -174,9 +181,9 @@ export default function DashboardPage() {
                     <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-2xl">
                       📝
                     </div>
-                    <span className="text-xs text-gray-400">Coming Soon</span>
+                    {/* <span className="text-xs text-gray-400">Coming Soon</span> */}
                   </div>
-                  <h3 className="text-2xl font-bold text-gray-800">0</h3>
+                  <h3 className="text-2xl font-bold text-gray-800">{applications?.data?.length || 0}</h3>
                   <p className="text-gray-600 text-sm mt-1">Applications Sent</p>
                   <p className="text-xs text-gray-400 mt-2">Track your applications</p>
                 </div>
