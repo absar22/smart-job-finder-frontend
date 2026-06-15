@@ -1,11 +1,20 @@
 "use client";
 import JobCard from "./JobCard";
 import { useGetJobsQuery } from "@/redux/api/jobApi";
+import JobCardSkeleton from "./JobCardSkeleton";
 
 export default function HomePage() {
   const {data, isLoading} = useGetJobsQuery({page: 1,limit:6});
 
- if(isLoading) return <div className="text-center py-4">Loading...</div>
+ if(isLoading) {
+   return (
+    <div className="grid gap-4">
+      {Array.from({ length: 6 }).map((_, index) => (
+        <JobCardSkeleton key={index} />
+      ))}
+    </div>
+  );
+ }
 
 const jobs = data?.jobs || [];
   return (

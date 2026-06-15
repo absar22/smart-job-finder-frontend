@@ -8,6 +8,7 @@ import { setUser } from '@/redux/slices/authSlice';
 import { useRouter } from 'next/navigation';
 import { useGetSavedJobsQuery } from '@/redux/api/savedJobsApi';
 import BookmarkedJobs from '@/components/BookmarkedJobs';
+import ApplicationTracking from '@/components/ApplicationTracking';
 export default function DashboardPage() {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -91,7 +92,7 @@ export default function DashboardPage() {
             }`}
           >
             📝 My Applications
-            <span className="ml-2 text-xs text-gray-400">(Coming Soon)</span>
+        
           </button>
           
           <button
@@ -136,7 +137,7 @@ export default function DashboardPage() {
           {activeTab === 'overview' && (
             <div className="space-y-6">
               {/* Welcome Section */}
-              <div className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-2xl p-8 text-white">
+              <div className="bg-linear-to-r from-orange-500 to-orange-600 rounded-2xl p-8 text-white">
                 <h2 className="text-2xl font-bold mb-2">
                   Welcome back, {user?.name?.split(' ')[0] || 'User'}! 👋
                 </h2>
@@ -233,30 +234,7 @@ export default function DashboardPage() {
 
           {/* Applications Tab (Coming Soon) */}
           {activeTab === 'applications' && (
-            <div className="bg-white rounded-xl border shadow-sm overflow-hidden">
-              <div className="p-12 text-center">
-                <div className="text-6xl mb-4">📝</div>
-                <h3 className="text-xl font-semibold text-gray-800 mb-2">Track Applications Coming Soon!</h3>
-                <p className="text-gray-600 mb-6">
-                  Monitor the status of all your job applications in one place.
-                </p>
-                <div className="bg-gray-50 rounded-lg p-4 max-w-md mx-auto">
-                  <p className="text-sm text-gray-500">✨ Future Features:</p>
-                  <ul className="text-sm text-gray-600 mt-2 space-y-1">
-                    <li>• Track application status (Applied, Interview, Offer, Rejected)</li>
-                    <li>• Add interview notes and reminders</li>
-                    <li>• View application history and analytics</li>
-                    <li>• Receive status update notifications</li>
-                  </ul>
-                </div>
-                <Link
-                  href="/jobs"
-                  className="inline-block mt-6 px-6 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
-                >
-                  Start Applying to Jobs
-                </Link>
-              </div>
-            </div>
+            <ApplicationTracking />
           )}
 
           {/* Profile Tab */}
@@ -265,7 +243,7 @@ export default function DashboardPage() {
               {/* Profile Card */}
               <div className="bg-white rounded-xl border shadow-sm p-8">
                 <div className="flex items-center gap-6 mb-8">
-                  <div className="w-24 h-24 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full flex items-center justify-center text-white text-3xl font-bold">
+                  <div className="w-24 h-24 bg-linear-to-br from-orange-500 to-orange-600 rounded-full flex items-center justify-center text-white text-3xl font-bold">
                     {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
                   </div>
                   <div>
