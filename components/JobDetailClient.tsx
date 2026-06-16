@@ -3,10 +3,11 @@
 import Link from "next/link";
 import { useGetJobBySlugQuery } from "@/redux/api/jobApi";
 import { useMeQuery } from "@/redux/api/authApi";
+import { useCreateTrackingJobMutation } from "@/redux/api/trackingJobApi";
 export default function JobDetailClient({ slug }: { slug: string }) {
   const { data: job, isLoading, isError } = useGetJobBySlugQuery(slug);
   const { data: user } = useMeQuery(undefined);
-
+  const [createTrackingJob] = useCreateTrackingJobMutation()
   if (isLoading) {
     return (
       <div className="max-w-4xl mx-auto px-6 py-12">
@@ -18,9 +19,21 @@ export default function JobDetailClient({ slug }: { slug: string }) {
     if(!user){
       alert("Please log in to apply for jobs.")
     }
-    else if(job?.link?.startsWith("http")){
+
+    try{
+       const res = createTrackingJob({
+        title: job?.title || '',
+        company: job?.company || '',
+        location: job?.location || '',
+        link: job?.link || '',
+        jobId: job?._id || '',
+      }).unwrap()
+
+       if(job?.link?.startsWith("http")){
       window.open(job.link, "_blank");
-    }else{
+    }
+ 
+    }catch(err){
       alert("Invalid job link.")
     }
   }
