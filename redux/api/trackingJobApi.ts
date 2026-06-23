@@ -38,8 +38,23 @@ export const jobApplication = baseApi.injectEndpoints({
                 url: `${BASE_URL}/applications`,
                 method: "GET"
             })
+        }),
+        updateTrackingJobs: builder.mutation({
+            query:({id,updateJobStatus}) => ({
+               url: `${BASE_URL}/applications/${id}`,
+               method:'PATCH',
+               body: updateJobStatus
+            }) 
+        }),
+        deleteTrackingJob: builder.mutation({
+            query: ({id}) => ({
+                url:`${BASE_URL}/applications/${id}`,
+                method:"DELETE",
+                body:id
+            })
         })
     })
+
 })
 
-export const {useCreateTrackingJobMutation,useGetTrackingJobsQuery} = jobApplication
+export const {useCreateTrackingJobMutation,useGetTrackingJobsQuery,useUpdateTrackingJobsMutation,useDeleteTrackingJobMutation} = jobApplication
