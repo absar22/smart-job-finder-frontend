@@ -15,7 +15,7 @@ export default function Header() {
   const handleLogout = async () => {
     try {
       await logout().unwrap();
-      router.refresh();
+      // router.refresh();
       router.push('/');
       setIsMenuOpen(false);
     } catch (err) {
