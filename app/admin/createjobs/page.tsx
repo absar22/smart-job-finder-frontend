@@ -3,6 +3,7 @@ import {  useState ,useEffect} from 'react';
 import { useCreateJobMutation } from '@/redux/api/jobApi';
 import { useMeQuery } from '@/redux/api/authApi';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 export default function createJobPage() {
   const router = useRouter();
   const {data: me} = useMeQuery( undefined)
@@ -40,10 +41,12 @@ export default function createJobPage() {
           skills: [],
           link: '',
         })
-         console.log('Job created successfully:', result);
+        //  console.log('Job created successfully:', result);
+        toast.success("Job created successfully");
 
       }catch(err){
         console.error('Error creating job:', err);
+        toast.error("Failed to create job");
       }
 
     }

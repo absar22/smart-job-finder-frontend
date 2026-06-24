@@ -1,4 +1,5 @@
 import { Inconsolata } from "next/font/google";
+import { Toaster } from "sonner";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -30,6 +31,7 @@ export default function RootLayout({
           <Header />
           <main className="flex-1">
             {children}
+            <Toaster/>
           </main>
           <Footer />
         </Providers>
