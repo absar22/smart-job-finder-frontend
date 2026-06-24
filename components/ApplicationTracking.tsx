@@ -116,7 +116,7 @@ export default function ApplicationTracking() {
                                         </div>
                                         
                                         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-                                            {/* Status Update Section */}
+                                          
                                             <div className="flex items-center gap-2">
                                                 <select
                                                     value={selectedStatus[app._id] || ''}
@@ -139,8 +139,7 @@ export default function ApplicationTracking() {
                                                     </button>
                                                 )}
                                             </div>
-                                            
-                                            {/* Delete Button */}
+                                    
                                             <button 
                                                 onClick={() => handleDeleteApplication(app._id)}
                                                 disabled={deleteLoading}

@@ -29,7 +29,7 @@ export default function JobSearchBar({ onLocationChange }: JobSearchBarProps) {
         <MapPin 
           size={20} 
           style={{ color: "oklch(70.2% 0.126 42.6)" }} 
-          className="flex-shrink-0"
+          className="shrink-0"
         />
       </div>
       <input
