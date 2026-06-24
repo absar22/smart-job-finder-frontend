@@ -2,8 +2,13 @@
 import JobCard from "./JobCard";
 import { useGetJobsQuery } from "@/redux/api/jobApi";
 import JobCardSkeleton from "./JobCardSkeleton";
-
+import Link from "next/link";
+import { useMeQuery } from "@/redux/api/authApi";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 export default function HomePage() {
+  const router = useRouter()
+  const {data:me} = useMeQuery(undefined)
   const {data, isLoading} = useGetJobsQuery({page: 1,limit:6});
 
  if(isLoading) {
@@ -14,6 +19,12 @@ export default function HomePage() {
       ))}
     </div>
   );
+ }
+ const handlePostVacancy = () => {
+  if(me?.user?.role !== 'admin'){
+   toast.error('Admin only')
+  }
+  router.push('/admin/createjobs')
  }
 
 const jobs = data?.jobs || [];
@@ -42,15 +53,15 @@ const jobs = data?.jobs || [];
 
        
           <div className="flex gap-4 flex-wrap mb-10">
-            <button className="px-8 py-4 text-white rounded-2xl font-black text-base uppercase tracking-tight border-none cursor-pointer transition-all hover:scale-105 hover:shadow-2xl active:scale-95"
+            <Link href={'/jobs'} className="px-8 py-4 text-white rounded-2xl font-black text-base uppercase tracking-tight border-none cursor-pointer transition-all hover:scale-105 hover:shadow-2xl active:scale-95"
               style={{
                 background: "oklch(70.2% 0.126 42.6)",
                 fontFamily: "var(--font-inconsolata)",
                 boxShadow: "0 8px 24px oklch(70.2% 0.126 42.6 / 0.4)",
               }}>
               Start browsing jobs 🚀
-            </button>
-            <button className="px-8 py-4 bg-white text-gray-900 border-2 border-gray-200 rounded-2xl font-black text-base uppercase tracking-tight cursor-pointer transition-all hover:border-[oklch(70.2%_0.126_42.6)] hover:text-[oklch(70.2%_0.126_42.6)]"
+            </Link>
+            <button onClick={(handlePostVacancy)} className="px-8 py-4 bg-white text-gray-900 border-2 border-gray-200 rounded-2xl font-black text-base uppercase tracking-tight cursor-pointer transition-all hover:border-[oklch(70.2%_0.126_42.6)] hover:text-[oklch(70.2%_0.126_42.6)]"
               style={{ fontFamily: "var(--font-inconsolata)" }}>
               Post a Vacancy
             </button>
