@@ -51,6 +51,7 @@ export default function SigninPage() {
                         placeholder='Password' 
                         className='border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400' 
                     />
+                    <Link href="/forgot-password" className='text-gray-500 hover:text-red-400 flex justify-end'>Forgot Password?</Link>
                     <button 
                         onClick={handleSubmit}
                         type='submit' 
@@ -60,7 +61,7 @@ export default function SigninPage() {
                     </button>
                       {displayError()}
                 </form>
-
+                    
                 <p className='mt-6 text-center text-gray-600'>
                     Don't have an account? <Link href="/signup" className='text-blue-500 hover:underline'>Signup</Link>
                 </p>

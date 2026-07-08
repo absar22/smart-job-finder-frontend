@@ -1,3 +1,4 @@
+
 import { baseApi } from "./baseApi";
 
 
@@ -47,10 +48,25 @@ export const authApi = baseApi.injectEndpoints({
         body:formData
       }),
       invalidatesTags:["User"]
-    })
-    
+    }),
+
+    forgotPassword: builder.mutation({
+      query: (email) => ({
+        url: "/auth/forgot-password",
+        method: "POST",
+        body: { email }
+      })
+    }),
+    resetPassword: builder.mutation({
+      query: ({token, password, confirmPassword}) => ({
+        url: `/reset-password/${token}`,
+        method: "PATCH",
+        body: { password, confirmPassword }
+      })
+    }),
+
   }),
   overrideExisting: false,
 });
 
-export const { useSignupMutation, useLoginMutation, useMeQuery, useLogoutMutation, useUploadProfileMutation } = authApi;
+export const { useSignupMutation, useLoginMutation, useMeQuery, useLogoutMutation, useUploadProfileMutation, useForgotPasswordMutation,useResetPasswordMutation } = authApi;
