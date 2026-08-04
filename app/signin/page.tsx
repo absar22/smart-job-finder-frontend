@@ -4,16 +4,22 @@ import Link from 'next/link'
 import react, {useState,useEffect} from 'react'
 import { useLoginMutation } from '@/redux/api/authApi'
 import { useRouter } from 'next/navigation'
+import { loginSchema, formatJoiErrors } from '@/utils/validators'
 export default function SigninPage() {
     const [email,setEmail] = useState('')
     const [password,setPassword] = useState('')
     const [error,setError] = useState('')
+    const [validationErrors, setValidationErrors] = useState<Record<string, string>>({})
     const [login,{isLoading}] = useLoginMutation()
     const router = useRouter()
     const handleSubmit = async(e:React.FormEvent)=> {
         e.preventDefault()
-        if(!email || !password){
-            setError('Please fill in all fields')
+        setError('')
+        setValidationErrors({})
+        
+        const { error: joiError } = loginSchema.validate({ email, password }, { abortEarly: false })
+        if (joiError) {
+            setValidationErrors(formatJoiErrors(joiError))
             return
         }
         try {
@@ -37,20 +43,26 @@ export default function SigninPage() {
                 <h1 className='text-4xl font-bold mb-6 text-center'>Signin</h1>
                 
                 <form className='flex flex-col gap-4'>
-                    <input 
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        type='email' 
-                        placeholder='Email' 
-                        className='border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400' 
-                    />
-                    <input 
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        type='password' 
-                        placeholder='Password' 
-                        className='border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400' 
-                    />
+                    <div>
+                        <input 
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            type='email' 
+                            placeholder='Email' 
+                            className='w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400' 
+                        />
+                        {validationErrors.email && <p className="text-red-500 text-sm mt-1">{validationErrors.email}</p>}
+                    </div>
+                    <div>
+                        <input 
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            type='password' 
+                            placeholder='Password' 
+                            className='w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400' 
+                        />
+                        {validationErrors.password && <p className="text-red-500 text-sm mt-1">{validationErrors.password}</p>}
+                    </div>
                     <Link href="/forgot-password" className='text-gray-500 hover:text-red-400 flex justify-end'>Forgot Password?</Link>
                     <button 
                         onClick={handleSubmit}

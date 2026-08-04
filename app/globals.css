@@ -1,15 +1,40 @@
 @import "tailwindcss";
 
 @theme {
-  --font-inconsolata: "Inconsolata", monospace;
-  --font-syne: "Syne", sans-serif;
+  /* Fonts */
+  --font-sans: "Inter", "Geist", system-ui, sans-serif;
+  --font-mono: "Inconsolata", monospace;
+  --font-display: "Syne", sans-serif;
 
-  --color-primary: oklch(96% 0.003 17.2);
-  --color-secondary: oklch(92.9% 0.01 228.9);
-  --color-main-orange: oklch(70.2% 0.126 42.6 / 0.85);
-  --color-main-green: oklch(73.3% 0.091 199 / 0.85);
-  --color-main-blue: oklch(68.6% 0.118 232.8 / 0.85);
-  --color-nav-btn: oklch(62.6% 0.106 198.8);
+  /* Brand / Semantic colors */
+  --color-brand: oklch(55% 0.15 25);
+  --color-brand-light: oklch(97% 0.01 25);
+  --color-brand-muted: oklch(70% 0.08 25);
+
+  /* Status / Feedback */
+  --color-success: oklch(65% 0.15 145);
+  --color-warning: oklch(70% 0.14 75);
+  --color-danger: oklch(55% 0.18 25);
+  --color-info: oklch(65% 0.12 232);
+
+  /* Surfaces */
+  --color-bg: oklch(98% 0.008 42.6);
+  --color-bg-elevated: oklch(100% 0 0);
+  --color-bg-subtle: oklch(96% 0.01 42.6);
+
+  /* Text */
+  --color-fg: oklch(22% 0.02 42.6);
+  --color-fg-muted: oklch(50% 0.02 42.6);
+  --color-fg-inverted: oklch(98% 0.005 42.6);
+
+  /* Borders */
+  --color-border: oklch(90% 0.01 42.6);
+  --color-border-strong: oklch(80% 0.015 42.6);
+
+  /* Legacy aliases (delete these after you refactor components) */
+  --color-main-orange: var(--color-brand);
+  --color-main-green: var(--color-success);
+  --color-main-blue: var(--color-info);
   --color-teal: oklch(62.6% 0.106 198.8);
   --color-teal-light: oklch(84.7% 0.022 227.6);
   --color-teal-lightest: oklch(92.6% 0.01 228.9);
@@ -17,8 +42,44 @@
 
 @layer base {
   body {
-    background-color: oklch(98% 0.008 42.6);
-    color: oklch(22% 0.02 42.6);
-    font-family: var(--font-inconsolata);
+    background-color: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  code,
+  pre,
+  kbd {
+    font-family: var(--font-mono);
+  }
+}
+
+/* Animations */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.5s ease-out both;
 }
